@@ -22,8 +22,6 @@ final class EventListViewModel {
         do {
             let response = try await eventService.listEvents(page: 1, perPage: 50)
             events = response.data
-        } catch let error as APIError {
-            errorMessage = error.localizedDescription
         } catch {
             errorMessage = error.localizedDescription
         }

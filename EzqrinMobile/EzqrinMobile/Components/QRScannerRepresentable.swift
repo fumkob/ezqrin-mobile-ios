@@ -18,6 +18,7 @@ struct QRScannerRepresentable: UIViewControllerRepresentable {
 final class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     var onCodeScanned: ((String) -> Void)?
 
+    private static let scanCooldownInterval: TimeInterval = 3.0
     private let captureSession = AVCaptureSession()
     private var previewLayer: AVCaptureVideoPreviewLayer?
     private var lastScannedCode: String?
@@ -41,6 +42,8 @@ final class QRScannerViewController: UIViewController, AVCaptureMetadataOutputOb
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         stopScanning()
+        cooldownTimer?.invalidate()
+        cooldownTimer = nil
     }
 
     private func setupCamera() {
@@ -105,7 +108,7 @@ final class QRScannerViewController: UIViewController, AVCaptureMetadataOutputOb
 
         // Reset after 3 seconds (allows re-scanning the same QR code)
         cooldownTimer?.invalidate()
-        cooldownTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { [weak self] _ in
+        cooldownTimer = Timer.scheduledTimer(withTimeInterval: Self.scanCooldownInterval, repeats: false) { [weak self] _ in
             self?.lastScannedCode = nil
         }
 

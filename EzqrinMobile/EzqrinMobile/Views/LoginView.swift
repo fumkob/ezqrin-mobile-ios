@@ -74,7 +74,6 @@ struct LoginView: View {
                 .padding(.horizontal)
 
                 Spacer()
-                Spacer()
             }
             .navigationTitle("")
         }

@@ -32,8 +32,6 @@ final class ScannerViewModel {
             showToast(.success(response.participant.name))
         } catch let error as APIError where error.isAlreadyCheckedIn {
             showToast(.alreadyCheckedIn)
-        } catch let error as APIError {
-            showToast(.error(error.localizedDescription))
         } catch {
             showToast(.error(error.localizedDescription))
         }
@@ -45,11 +43,10 @@ final class ScannerViewModel {
         dismissTask?.cancel()
         toastState = state
 
-        dismissTask = Task {
+        dismissTask = Task { [weak self] in
             try? await Task.sleep(for: .seconds(3))
-            if !Task.isCancelled {
-                toastState = .hidden
-            }
+            guard !Task.isCancelled else { return }
+            self?.toastState = .hidden
         }
     }
 }

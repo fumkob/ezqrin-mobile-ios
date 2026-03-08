@@ -11,6 +11,16 @@ final class AuthInterceptor: RequestInterceptor, @unchecked Sendable {
     private let refreshSession: Session
     private let lock = NSLock()
     private var isRefreshing = false
+    private let encoder: JSONEncoder = {
+        let e = JSONEncoder()
+        e.keyEncodingStrategy = .convertToSnakeCase
+        return e
+    }()
+    private let decoder: JSONDecoder = {
+        let d = JSONDecoder()
+        d.keyDecodingStrategy = .convertFromSnakeCase
+        return d
+    }()
 
     init(keychainManager: KeychainManager, baseURL: String) {
         self.keychainManager = keychainManager
@@ -80,11 +90,6 @@ final class AuthInterceptor: RequestInterceptor, @unchecked Sendable {
                 }
 
                 let body = RefreshTokenRequest(refreshToken: refreshToken)
-                let encoder = JSONEncoder()
-                encoder.keyEncodingStrategy = .convertToSnakeCase
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-
                 var urlRequest = try URLRequest(
                     url: baseURL + "/auth/refresh",
                     method: .post

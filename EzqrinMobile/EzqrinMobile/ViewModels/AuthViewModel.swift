@@ -41,8 +41,6 @@ final class AuthViewModel {
             try keychainManager.saveString(response.accessToken, forKey: "access_token")
             try keychainManager.saveString(response.refreshToken, forKey: "refresh_token")
             isAuthenticated = true
-        } catch let error as APIError {
-            errorMessage = error.localizedDescription
         } catch {
             errorMessage = error.localizedDescription
         }
