@@ -1,17 +1,42 @@
-//
-//  EzqrinMobileApp.swift
-//  EzqrinMobile
-//
-//  Created by Fumiaki Kobayashi on 2026/03/08.
-//
-
 import SwiftUI
 
 @main
 struct EzqrinMobileApp: App {
+    @State private var authViewModel: AuthViewModel
+
+    init() {
+        let keychainManager = KeychainManager()
+        let interceptor = AuthInterceptor(
+            keychainManager: keychainManager,
+            baseURL: AppConfig.baseURL
+        )
+        let apiClient = APIClient(
+            baseURL: AppConfig.baseURL,
+            interceptor: interceptor
+        )
+        let authService = AuthService(client: apiClient)
+
+        _authViewModel = State(initialValue: AuthViewModel(
+            authService: authService,
+            keychainManager: keychainManager
+        ))
+    }
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            Group {
+                if authViewModel.isAuthenticated {
+                    MainTabView()
+                } else {
+                    LoginView()
+                }
+            }
+            .environment(authViewModel)
         }
     }
+}
+
+enum AppConfig {
+    // Base URL for development environment. Switch via environment variables or build settings for production.
+    static let baseURL = "http://localhost:8080/api/v1"
 }
