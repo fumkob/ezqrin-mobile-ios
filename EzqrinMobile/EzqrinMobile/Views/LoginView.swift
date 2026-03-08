@@ -76,6 +76,10 @@ struct LoginView: View {
                 Spacer()
             }
             .navigationTitle("")
+            .contentShape(Rectangle())
+            .onTapGesture {
+                focusedField = nil
+            }
         }
     }
 }
