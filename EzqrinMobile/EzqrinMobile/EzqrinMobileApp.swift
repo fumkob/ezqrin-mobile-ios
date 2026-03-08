@@ -3,22 +3,14 @@ import SwiftUI
 @main
 struct EzqrinMobileApp: App {
     @State private var authViewModel: AuthViewModel
+    private let serviceContainer: ServiceContainer
 
     init() {
-        let keychainManager = KeychainManager()
-        let interceptor = AuthInterceptor(
-            keychainManager: keychainManager,
-            baseURL: AppConfig.baseURL
-        )
-        let apiClient = APIClient(
-            baseURL: AppConfig.baseURL,
-            interceptor: interceptor
-        )
-        let authService = AuthService(client: apiClient)
-
+        let container = ServiceContainer()
+        self.serviceContainer = container
         _authViewModel = State(initialValue: AuthViewModel(
-            authService: authService,
-            keychainManager: keychainManager
+            authService: container.authService,
+            keychainManager: container.keychainManager
         ))
     }
 
@@ -27,12 +19,37 @@ struct EzqrinMobileApp: App {
             Group {
                 if authViewModel.isAuthenticated {
                     MainTabView()
+                        .environment(serviceContainer)
                 } else {
                     LoginView()
                 }
             }
             .environment(authViewModel)
         }
+    }
+}
+
+@Observable
+final class ServiceContainer {
+    let keychainManager: KeychainManager
+    let apiClient: APIClient
+    let authService: AuthService
+    let eventService: EventService
+    let checkInService: CheckInService
+
+    init() {
+        let keychain = KeychainManager()
+        let interceptor = AuthInterceptor(
+            keychainManager: keychain,
+            baseURL: AppConfig.baseURL
+        )
+        let client = APIClient(baseURL: AppConfig.baseURL, interceptor: interceptor)
+
+        self.keychainManager = keychain
+        self.apiClient = client
+        self.authService = AuthService(client: client)
+        self.eventService = EventService(client: client)
+        self.checkInService = CheckInService(client: client)
     }
 }
 

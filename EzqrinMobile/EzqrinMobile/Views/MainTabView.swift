@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MainTabView: View {
     @Environment(AuthViewModel.self) private var authViewModel
+    @Environment(ServiceContainer.self) private var services
     @State private var selectedEvent: Event?
     @State private var selectedTab = 0
 
@@ -22,38 +23,19 @@ struct MainTabView: View {
             if let event = selectedEvent {
                 ScannerView(
                     event: event,
-                    checkInService: makeCheckInService(),
+                    checkInService: services.checkInService,
                     onChangeEvent: { selectedEvent = nil }
                 )
                 .navigationBarHidden(true)
             } else {
                 EventListView(
-                    eventService: makeEventService(),
+                    eventService: services.eventService,
                     onEventSelected: { event in
                         selectedEvent = event
                     }
                 )
             }
         }
-    }
-
-    // MARK: - Service Factory
-
-    private func makeAPIClient() -> APIClient {
-        let keychainManager = KeychainManager()
-        let interceptor = AuthInterceptor(
-            keychainManager: keychainManager,
-            baseURL: AppConfig.baseURL
-        )
-        return APIClient(baseURL: AppConfig.baseURL, interceptor: interceptor)
-    }
-
-    private func makeEventService() -> EventService {
-        EventService(client: makeAPIClient())
-    }
-
-    private func makeCheckInService() -> CheckInService {
-        CheckInService(client: makeAPIClient())
     }
 }
 
@@ -70,5 +52,6 @@ private final class PreviewAuthServiceForMain: AuthServiceProtocol, @unchecked S
     )
     MainTabView()
         .environment(vm)
+        .environment(ServiceContainer())
 }
 #endif
