@@ -10,7 +10,7 @@ final class AuthViewModel {
 
     private let authService: any AuthServiceProtocol
     private let keychainManager: KeychainManager
-    nonisolated(unsafe) private var notificationTask: Task<Void, Never>?
+    @ObservationIgnored nonisolated(unsafe) private var notificationTask: Task<Void, Never>?
 
     init(authService: any AuthServiceProtocol, keychainManager: KeychainManager) {
         self.authService = authService
