@@ -6,6 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		50ACDFF02F5D29B900B83C4C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 50ACDFEF2F5D29B900B83C4C /* Alamofire */; };
+		50ACDFF22F5D29B900B83C4C /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 50ACDFF12F5D29B900B83C4C /* AlamofireDynamic */; };
+		50ACDFF52F5D2A0C00B83C4C /* _OpenAPIGeneratorCore in Frameworks */ = {isa = PBXBuildFile; productRef = 50ACDFF42F5D2A0C00B83C4C /* _OpenAPIGeneratorCore */; };
+		50ACDFF72F5D2A0C00B83C4C /* swift-openapi-generator in Frameworks */ = {isa = PBXBuildFile; productRef = 50ACDFF62F5D2A0C00B83C4C /* swift-openapi-generator */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		50ACDFCA2F5D271A00B83C4C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -76,6 +83,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50ACDFF02F5D29B900B83C4C /* Alamofire in Frameworks */,
+				50ACDFF72F5D2A0C00B83C4C /* swift-openapi-generator in Frameworks */,
+				50ACDFF22F5D29B900B83C4C /* AlamofireDynamic in Frameworks */,
+				50ACDFF52F5D2A0C00B83C4C /* _OpenAPIGeneratorCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,6 +147,10 @@
 			);
 			name = EzqrinMobile;
 			packageProductDependencies = (
+				50ACDFEF2F5D29B900B83C4C /* Alamofire */,
+				50ACDFF12F5D29B900B83C4C /* AlamofireDynamic */,
+				50ACDFF42F5D2A0C00B83C4C /* _OpenAPIGeneratorCore */,
+				50ACDFF62F5D2A0C00B83C4C /* swift-openapi-generator */,
 			);
 			productName = EzqrinMobile;
 			productReference = 50ACDFBC2F5D271800B83C4C /* EzqrinMobile.app */;
@@ -219,6 +234,10 @@
 			);
 			mainGroup = 50ACDFB32F5D271800B83C4C;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				50ACDFEE2F5D29B900B83C4C /* XCRemoteSwiftPackageReference "Alamofire" */,
+				50ACDFF32F5D2A0C00B83C4C /* XCRemoteSwiftPackageReference "swift-openapi-generator" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 50ACDFBD2F5D271800B83C4C /* Products */;
 			projectDirPath = "";
@@ -600,6 +619,48 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		50ACDFEE2F5D29B900B83C4C /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.11.1;
+			};
+		};
+		50ACDFF32F5D2A0C00B83C4C /* XCRemoteSwiftPackageReference "swift-openapi-generator" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-openapi-generator";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.10.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		50ACDFEF2F5D29B900B83C4C /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 50ACDFEE2F5D29B900B83C4C /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		50ACDFF12F5D29B900B83C4C /* AlamofireDynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 50ACDFEE2F5D29B900B83C4C /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = AlamofireDynamic;
+		};
+		50ACDFF42F5D2A0C00B83C4C /* _OpenAPIGeneratorCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 50ACDFF32F5D2A0C00B83C4C /* XCRemoteSwiftPackageReference "swift-openapi-generator" */;
+			productName = _OpenAPIGeneratorCore;
+		};
+		50ACDFF62F5D2A0C00B83C4C /* swift-openapi-generator */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 50ACDFF32F5D2A0C00B83C4C /* XCRemoteSwiftPackageReference "swift-openapi-generator" */;
+			productName = "swift-openapi-generator";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 50ACDFB42F5D271800B83C4C /* Project object */;
 }
