@@ -49,7 +49,7 @@ struct LoginView: View {
                 if let error = authViewModel.errorMessage {
                     Text(error)
                         .font(.callout)
-                        .foregroundStyle(.red)
+                        .foregroundStyle(Color.app.destructive)
                         .padding(.horizontal)
                 }
 

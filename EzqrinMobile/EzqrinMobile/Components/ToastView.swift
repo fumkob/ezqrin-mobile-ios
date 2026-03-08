@@ -11,19 +11,19 @@ struct ToastView: View {
             toastContent(
                 icon: "checkmark.circle.fill",
                 text: "\(name) checked in",
-                color: .green
+                color: .app.success
             )
         case .alreadyCheckedIn:
             toastContent(
                 icon: "exclamationmark.circle.fill",
                 text: "Already checked in",
-                color: .orange
+                color: .app.warning
             )
         case .error(let message):
             toastContent(
                 icon: "xmark.circle.fill",
                 text: message,
-                color: .red
+                color: .app.destructive
             )
         }
     }

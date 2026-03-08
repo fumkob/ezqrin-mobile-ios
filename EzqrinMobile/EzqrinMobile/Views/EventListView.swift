@@ -78,10 +78,10 @@ private struct EventRow: View {
 
     private var statusColor: Color {
         switch event.status {
-        case .published: .blue
-        case .ongoing: .green
+        case .published: .accentColor
+        case .ongoing: .app.statusOngoing
         case .completed: .gray
-        case .cancelled: .red
+        case .cancelled: .app.destructive
         default: .secondary
         }
     }
@@ -103,7 +103,7 @@ private final class PreviewEventService: EventServiceProtocol, @unchecked Sendab
     service.events = [
         Event(id: "1", organizerId: "u1", name: "WWDC 2026", description: nil,
               startDate: "2026-06-09T09:00:00Z", endDate: "2026-06-13T18:00:00Z",
-              location: "Cupertino", status: "published", participantCount: 300, checkedInCount: 120)
+              location: "Cupertino", status: .published, participantCount: 300, checkedInCount: 120)
     ]
     return NavigationStack {
         EventListView(eventService: service, onEventSelected: { _ in })

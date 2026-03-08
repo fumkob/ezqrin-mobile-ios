@@ -80,7 +80,7 @@ private final class PreviewCheckInService: CheckInServiceProtocol, @unchecked Se
 private let previewEvent = Event(
     id: "1", organizerId: "u1", name: "WWDC 2026", description: nil,
     startDate: "2026-06-09T09:00:00Z", endDate: "2026-06-13T18:00:00Z",
-    location: "Cupertino", status: "ongoing", participantCount: 300, checkedInCount: 120
+    location: "Cupertino", status: .ongoing, participantCount: 300, checkedInCount: 120
 )
 
 #Preview {
