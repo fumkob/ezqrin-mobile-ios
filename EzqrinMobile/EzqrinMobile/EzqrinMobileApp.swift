@@ -37,6 +37,10 @@ struct EzqrinMobileApp: App {
 }
 
 enum AppConfig {
-    // Base URL for development environment. Switch via environment variables or build settings for production.
-    static let baseURL = "http://localhost:8080/api/v1"
+    static let baseURL: String = {
+        guard let url = Bundle.main.object(forInfoDictionaryKey: "BASE_URL") as? String else {
+            fatalError("BASE_URL is not set in Info.plist")
+        }
+        return url
+    }()
 }

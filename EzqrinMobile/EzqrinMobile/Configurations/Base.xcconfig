@@ -1,1 +1,6 @@
 BUNDLE_ID = com.ezqrin.mobile
+
+// xcconfig treats // as a comment. Use $(SLASH) to embed double-slash in URLs.
+SLASH = /
+// API Base URL — override per configuration (e.g. Debug.xcconfig, Release.xcconfig)
+BASE_URL = http:$(SLASH)$(SLASH)localhost:8080/api/v1
