@@ -57,7 +57,7 @@ private struct EventRow: View {
             Text(event.name)
                 .font(.headline)
             HStack {
-                Label(event.status.capitalized, systemImage: "circle.fill")
+                Label(event.status.rawValue.capitalized, systemImage: "circle.fill")
                     .font(.caption)
                     .foregroundStyle(statusColor)
                 Spacer()
@@ -78,10 +78,10 @@ private struct EventRow: View {
 
     private var statusColor: Color {
         switch event.status {
-        case "published": .blue
-        case "ongoing": .green
-        case "completed": .gray
-        case "cancelled": .red
+        case .published: .blue
+        case .ongoing: .green
+        case .completed: .gray
+        case .cancelled: .red
         default: .secondary
         }
     }

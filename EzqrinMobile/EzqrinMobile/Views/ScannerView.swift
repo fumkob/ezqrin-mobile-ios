@@ -3,14 +3,12 @@ import SwiftUI
 struct ScannerView: View {
     let event: Event
     let checkInService: any CheckInServiceProtocol
-    let onChangeEvent: () -> Void
 
     @State private var viewModel: ScannerViewModel
 
-    init(event: Event, checkInService: any CheckInServiceProtocol, onChangeEvent: @escaping () -> Void) {
+    init(event: Event, checkInService: any CheckInServiceProtocol) {
         self.event = event
         self.checkInService = checkInService
-        self.onChangeEvent = onChangeEvent
         _viewModel = State(initialValue: ScannerViewModel(
             checkInService: checkInService,
             eventId: event.id
@@ -29,23 +27,15 @@ struct ScannerView: View {
 
             // Overlay
             VStack {
-                // Event info bar
-                HStack {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(event.name)
-                            .font(.headline)
-                        if let count = event.participantCount, let checked = event.checkedInCount {
-                            Text("\(checked)/\(count) checked in")
-                                .font(.caption)
-                        }
-                    }
-                    Spacer()
-                    Button("Change", action: onChangeEvent)
-                        .buttonStyle(.bordered)
-                        .tint(.white)
+                // Participant count
+                if let count = event.participantCount, let checked = event.checkedInCount {
+                    Text("\(checked)/\(count) checked in")
+                        .font(.caption)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(.ultraThinMaterial, in: Capsule())
+                        .padding(.top, 8)
                 }
-                .padding()
-                .background(.ultraThinMaterial)
 
                 // Toast
                 if viewModel.toastState != .hidden {
@@ -72,6 +62,10 @@ struct ScannerView: View {
                 }
             }
         }
+        .navigationTitle(event.name)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
+        .toolbarColorScheme(.dark, for: .navigationBar)
         .animation(.easeInOut(duration: 0.3), value: viewModel.toastState)
     }
 }
@@ -90,10 +84,11 @@ private let previewEvent = Event(
 )
 
 #Preview {
-    ScannerView(
-        event: previewEvent,
-        checkInService: PreviewCheckInService(),
-        onChangeEvent: {}
-    )
+    NavigationStack {
+        ScannerView(
+            event: previewEvent,
+            checkInService: PreviewCheckInService()
+        )
+    }
 }
 #endif

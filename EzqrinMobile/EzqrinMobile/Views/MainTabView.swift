@@ -20,19 +20,14 @@ struct MainTabView: View {
     @ViewBuilder
     private var scanTab: some View {
         NavigationStack {
-            if let event = selectedEvent {
+            EventListView(
+                eventService: services.eventService,
+                onEventSelected: { event in selectedEvent = event }
+            )
+            .navigationDestination(item: $selectedEvent) { event in
                 ScannerView(
                     event: event,
-                    checkInService: services.checkInService,
-                    onChangeEvent: { selectedEvent = nil }
-                )
-                .navigationBarHidden(true)
-            } else {
-                EventListView(
-                    eventService: services.eventService,
-                    onEventSelected: { event in
-                        selectedEvent = event
-                    }
+                    checkInService: services.checkInService
                 )
             }
         }

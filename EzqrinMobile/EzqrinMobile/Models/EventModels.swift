@@ -5,7 +5,7 @@ struct EventListResponse: Codable, Sendable {
     let meta: PaginationMeta
 }
 
-struct Event: Codable, Sendable, Identifiable {
+struct Event: Codable, Sendable, Identifiable, Hashable {
     let id: String
     let organizerId: String
     let name: String
@@ -13,7 +13,7 @@ struct Event: Codable, Sendable, Identifiable {
     let startDate: String
     let endDate: String?
     let location: String?
-    let status: String
+    let status: EventStatus
     let participantCount: Int?
     let checkedInCount: Int?
 }
