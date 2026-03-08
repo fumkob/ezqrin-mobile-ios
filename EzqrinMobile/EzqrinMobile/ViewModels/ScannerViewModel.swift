@@ -33,7 +33,7 @@ final class ScannerViewModel {
         } catch let error as APIError where error.isAlreadyCheckedIn {
             showToast(.alreadyCheckedIn)
         } catch let error as APIError {
-            showToast(.error(error.localizedDescription ?? "Check-in failed"))
+            showToast(.error(error.localizedDescription))
         } catch {
             showToast(.error(error.localizedDescription))
         }
