@@ -96,6 +96,10 @@ private final class PreviewEventService: EventServiceProtocol, @unchecked Sendab
             meta: PaginationMeta(page: 1, perPage: 50, total: events.count, totalPages: 1)
         )
     }
+    func getEvent(eventId: String) async throws -> Event {
+        guard let event = events.first(where: { $0.id == eventId }) else { throw APIError.unknown }
+        return event
+    }
 }
 
 #Preview("With Events") {

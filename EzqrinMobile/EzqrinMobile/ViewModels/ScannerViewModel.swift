@@ -11,16 +11,22 @@ enum ToastState: Equatable {
 @Observable
 @MainActor
 final class ScannerViewModel {
+    var event: Event
     var toastState: ToastState = .hidden
     var isProcessing = false
 
     private let checkInService: any CheckInServiceProtocol
-    private let eventId: String
+    private let eventService: any EventServiceProtocol
     private var dismissTask: Task<Void, Never>?
 
-    init(checkInService: any CheckInServiceProtocol, eventId: String) {
+    init(
+        event: Event,
+        checkInService: any CheckInServiceProtocol,
+        eventService: any EventServiceProtocol
+    ) {
+        self.event = event
         self.checkInService = checkInService
-        self.eventId = eventId
+        self.eventService = eventService
     }
 
     func handleScannedCode(_ code: String) async {
@@ -28,8 +34,9 @@ final class ScannerViewModel {
         isProcessing = true
 
         do {
-            let response = try await checkInService.checkIn(eventId: eventId, qrCode: code)
+            let response = try await checkInService.checkIn(eventId: event.id, qrCode: code)
             showToast(.success(response.participant.name))
+            await refreshEvent()
         } catch let error as APIError where error.isAlreadyCheckedIn {
             showToast(.alreadyCheckedIn)
         } catch {
@@ -37,6 +44,12 @@ final class ScannerViewModel {
         }
 
         isProcessing = false
+    }
+
+    private func refreshEvent() async {
+        if let updated = try? await eventService.getEvent(eventId: event.id) {
+            event = updated
+        }
     }
 
     private func showToast(_ state: ToastState) {

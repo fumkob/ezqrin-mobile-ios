@@ -27,7 +27,8 @@ struct MainTabView: View {
             .navigationDestination(item: $selectedEvent) { event in
                 ScannerView(
                     event: event,
-                    checkInService: services.checkInService
+                    checkInService: services.checkInService,
+                    eventService: services.eventService
                 )
             }
         }

@@ -1,17 +1,13 @@
 import SwiftUI
 
 struct ScannerView: View {
-    let event: Event
-    let checkInService: any CheckInServiceProtocol
-
     @State private var viewModel: ScannerViewModel
 
-    init(event: Event, checkInService: any CheckInServiceProtocol) {
-        self.event = event
-        self.checkInService = checkInService
+    init(event: Event, checkInService: any CheckInServiceProtocol, eventService: any EventServiceProtocol) {
         _viewModel = State(initialValue: ScannerViewModel(
+            event: event,
             checkInService: checkInService,
-            eventId: event.id
+            eventService: eventService
         ))
     }
 
@@ -28,7 +24,7 @@ struct ScannerView: View {
             // Overlay
             VStack {
                 // Participant count
-                if let count = event.participantCount, let checked = event.checkedInCount {
+                if let count = viewModel.event.participantCount, let checked = viewModel.event.checkedInCount {
                     Text("\(checked)/\(count) checked in")
                         .font(.caption)
                         .padding(.horizontal, 12)
@@ -62,7 +58,7 @@ struct ScannerView: View {
                 }
             }
         }
-        .navigationTitle(event.name)
+        .navigationTitle(viewModel.event.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
         .toolbarColorScheme(.dark, for: .navigationBar)
@@ -77,6 +73,15 @@ private final class PreviewCheckInService: CheckInServiceProtocol, @unchecked Se
     }
 }
 
+private final class PreviewEventService: EventServiceProtocol, @unchecked Sendable {
+    func listEvents(page: Int, perPage: Int) async throws -> EventListResponse {
+        EventListResponse(data: [], meta: PaginationMeta(page: 1, perPage: 50, total: 0, totalPages: 1))
+    }
+    func getEvent(eventId: String) async throws -> Event {
+        throw APIError.unknown
+    }
+}
+
 private let previewEvent = Event(
     id: "1", organizerId: "u1", name: "WWDC 2026", description: nil,
     startDate: "2026-06-09T09:00:00Z", endDate: "2026-06-13T18:00:00Z",
@@ -87,7 +92,8 @@ private let previewEvent = Event(
     NavigationStack {
         ScannerView(
             event: previewEvent,
-            checkInService: PreviewCheckInService()
+            checkInService: PreviewCheckInService(),
+            eventService: PreviewEventService()
         )
     }
 }
